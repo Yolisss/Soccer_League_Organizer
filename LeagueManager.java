@@ -14,25 +14,10 @@ public class LeagueManager {
     System.out.printf("There are currently %d registered players.%n", players.length);
     // Your code here!
     //start of prompt
-    System.out.print("What would you like to do? " +
-            "[Create a new team, Add players to a team, Remove players from a team]"
-    );
-    String userItemInput = scanner.nextLine();
+// Initialize the TeamList
+    TeamList teamList = new TeamList();
 
-    //team name info
-    System.out.print("Give your team a name: ");
-    String teamInfo = scanner.nextLine();
-
-    //coach name info
-    System.out.print("Coach name: ");
-    String coachInfo = scanner.nextLine();
-
-//    System.out.printf("Your team name is: %s%n%n" + "Your coach's name is: %s%n%n", teamInfo, coachInfo);
-    Team newTeam = new Team(teamInfo, coachInfo);
-    TeamList.addTeam(newTeam);
-
-    for(Team team : TeamList.getTeams()){
-      System.out.println(team);
-    }
+    // Start the team management prompt
+    teamList.run();
   }
 }
