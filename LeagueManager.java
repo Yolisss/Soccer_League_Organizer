@@ -31,10 +31,8 @@ public class LeagueManager {
     Team newTeam = new Team(teamInfo, coachInfo);
     TeamList.addTeam(newTeam);
 
-
-    System.out.println("Teams");
     for(Team team : TeamList.getTeams()){
-      System.out.println("Team Name: " + team.getTeamName() + " Coach Name: " + team.getCoachName());
+      System.out.println(team);
     }
   }
 }

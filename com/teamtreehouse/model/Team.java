@@ -18,4 +18,9 @@ public class Team {
     public String getCoachName() {
         return mCoachName;
     }
+
+    @Override
+    public String toString(){
+        return String.format("Team: %s, Coach: %s", mTeamName, mCoachName);
+    }
 }
