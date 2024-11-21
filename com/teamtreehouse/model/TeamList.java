@@ -3,10 +3,8 @@ package com.teamtreehouse.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
 
 
 public class TeamList{
@@ -20,9 +18,9 @@ public class TeamList{
     }
 
     private String promptAction() throws IOException{
-        System.out.print("What do you want to do: ");
-        System.out.print("add - Create a new team");
-        System.out.print("list - Show all teams");
+        System.out.println("What do you want to do: ");
+        System.out.println("add - Create a new team ");
+        System.out.println("list - Show all teams ");
         String choice = mReader.readLine();
         return choice.trim().toLowerCase();
     }
@@ -74,7 +72,7 @@ public class TeamList{
             System.out.println("No teams available.");
         } else {
             System.out.println("Current teams:");
-            for (String team : mTeams.values()) {
+            for (String team : mTeams.keySet()) {
                 System.out.println(team);
             }
         }
