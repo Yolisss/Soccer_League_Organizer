@@ -6,9 +6,9 @@ public class Team {
     private String mTeamName;
     private String mCoachName;
 
-    public Team(String coachName, String teamName) {
-        mCoachName = coachName;
+    public Team(String teamName, String coachName) {
         mTeamName = teamName;
+        mCoachName = coachName;
     }
 
     public String getTeamName() {
@@ -21,6 +21,6 @@ public class Team {
 
     @Override
     public String toString(){
-        return String.format("Team: %s, Coach: %s", mTeamName, mCoachName);
+        return String.format("Team: %s, Coach: %s", getTeamName(), getCoachName());
     }
 }
