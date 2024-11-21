@@ -1,5 +1,7 @@
 import com.teamtreehouse.model.Player;
 import com.teamtreehouse.model.Players;
+import com.teamtreehouse.model.Team;
+import com.teamtreehouse.model.TeamList;
 
 import java.util.Scanner;
 
@@ -25,7 +27,14 @@ public class LeagueManager {
     System.out.print("Coach name: ");
     String coachInfo = scanner.nextLine();
 
-    System.out.printf("Your team name is: %s%n%n" + "Your coach's name is: %s%n%n", teamInfo, coachInfo);
-  }
+//    System.out.printf("Your team name is: %s%n%n" + "Your coach's name is: %s%n%n", teamInfo, coachInfo);
+    Team newTeam = new Team(teamInfo, coachInfo);
+    TeamList.addTeam(newTeam);
 
+
+    System.out.println("Teams");
+    for(Team team : TeamList.getTeams()){
+      System.out.println("Team Name: " + team.getTeamName() + " Coach Name: " + team.getCoachName());
+    }
+  }
 }
