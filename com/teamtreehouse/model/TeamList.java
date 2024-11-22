@@ -26,14 +26,15 @@ public class TeamList {
             System.out.println("[3] View all teams");
             System.out.println("[4] Remove a player from a team");
             System.out.println("[5] View team height report");
-            System.out.println("[6] League Balance Report");
-            System.out.println("[7] Exit");
+            System.out.println("[6] View league balance report");
+            System.out.println("[7] Print a team roster");
+            System.out.println("[8] Exit");
 
             try {
                 choice = mReader.readLine();
                 switch (choice) {
                     case "1":
-                        addTeam();  // Calls the addTeam method
+                        addTeam();
                         break;
                     case "2":
                         addPlayerToTeam();
@@ -51,6 +52,9 @@ public class TeamList {
                         viewLeagueBalanceReport();
                         break;
                     case "7":
+                        printTeamRoster();
+                        break;
+                    case "8":
                         System.out.println("Goodbye!");
                         return;
                     default:
@@ -83,7 +87,7 @@ public class TeamList {
         Team selectedTeam = mTeams.get(teamIndex);
 
         // Get the players from the selected team
-        List<Player> players = selectedTeam.getPlayers(); // Assuming this method exists in Team class
+        List<Player> players = selectedTeam.getPlayers();
         if (players == null || players.isEmpty()) {
             System.out.println("No players to remove from the selected team.");
             return;
@@ -104,7 +108,7 @@ public class TeamList {
         }
 
         Player selectedPlayer = players.get(playerIndex);
-        if (selectedTeam.removePlayer(selectedPlayer)) {  // Assuming removePlayer method exists in Team class
+        if (selectedTeam.removePlayer(selectedPlayer)) {
             System.out.println("Player removed from the team.");
         } else {
             System.out.println("Failed to remove player from the team.");
@@ -119,7 +123,7 @@ public class TeamList {
         String coachName = mReader.readLine();
 
         Team newTeam = new Team(teamName, coachName);
-        mTeams.add(newTeam);  // Add the new team to the list
+        mTeams.add(newTeam);
 
         System.out.println("Team created successfully: " + newTeam);
     }
@@ -143,8 +147,8 @@ public class TeamList {
 
         Team selectedTeam = mTeams.get(teamIndex);
 
-        // Get available players (Assuming the list is in the form of an array or a similar collection)
-        Player[] players = Players.load(); // Assuming this method exists and returns an array of available players
+        // Get available players
+        Player[] players = Players.load();
         if (players == null || players.length == 0) {
             System.out.println("No players available to add.");
             return;
@@ -165,7 +169,7 @@ public class TeamList {
         }
 
         Player selectedPlayer = players[playerIndex];
-        if (selectedTeam.addPlayer(selectedPlayer)) {  // Assuming addPlayer method exists in Team class
+        if (selectedTeam.addPlayer(selectedPlayer)) {
             System.out.println("Player added to the team.");
         } else {
             System.out.println("Failed to add player to the team.");
@@ -246,6 +250,58 @@ public class TeamList {
                     teamName,
                     playerCounts.get("Experienced"),
                     playerCounts.get("Inexperienced"));
+        }
+    }
+
+    private void printTeamRoster() {
+        if (mTeams.isEmpty()) {
+            System.out.println("No teams available. Create teams first.");
+            return;
+        }
+
+        // Prompt user to select a team
+        Team selectedTeam = selectTeam();
+        if (selectedTeam == null) {
+            return; // No valid team selected
+        }
+
+        System.out.printf("Roster for Team: %s%n", selectedTeam.getTeamName());
+        List<Player> players = selectedTeam.getPlayers();
+
+        if (players.isEmpty()) {
+            System.out.println("No players in this team yet.");
+            return;
+        }
+
+        // Display each player's stats
+        for (Player player : players) {
+            System.out.printf("%s %s(%d inches - %s)%n",
+                    player.getFirstName(),
+                    player.getLastName(),
+                    player.getHeightInInches(),
+                    player.isPreviousExperience() ? "Experienced" : "Inexperienced"
+            );
+        }
+    }
+
+    private Team selectTeam() {
+        System.out.println("Select a team:");
+        for (int i = 0; i < mTeams.size(); i++) {
+            System.out.printf("[%d] %s%n", i + 1, mTeams.get(i).getTeamName());
+        }
+
+        try {
+            String input = mReader.readLine();
+            int choice = Integer.parseInt(input) - 1;
+
+            if (choice < 0 || choice >= mTeams.size()) {
+                System.out.println("Invalid choice. Please try again.");
+                return null;
+            }
+            return mTeams.get(choice);
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("An error occurred. Please try again.");
+            return null;
         }
     }
 }

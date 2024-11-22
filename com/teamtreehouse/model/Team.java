@@ -25,14 +25,12 @@ public class Team {
         return mPlayers;
     }
 
-    // Method to display players sorted alphabetically by last name and then first name
     public void displayPlayersAlphabetically() {
         if (mPlayers.isEmpty()) {
             System.out.println("No players on this team.");
             return;
         }
 
-        // Sort players alphabetically using the compareTo method defined in Player class
         Collections.sort(mPlayers);
 
         System.out.println("Players on " + mTeamName + ":");
