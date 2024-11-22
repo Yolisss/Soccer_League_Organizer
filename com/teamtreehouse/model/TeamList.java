@@ -2,11 +2,7 @@ package com.teamtreehouse.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TeamList {
     private List<Team> mTeams;
@@ -14,7 +10,7 @@ public class TeamList {
 
     public TeamList(BufferedReader reader) {
         mTeams = new ArrayList<>();
-        mReader = new BufferedReader(new InputStreamReader(System.in));
+        mReader = reader;
     }
 
     public void run() {
@@ -87,7 +83,7 @@ public class TeamList {
         Team selectedTeam = mTeams.get(teamIndex);
 
         // Get the players from the selected team
-        List<Player> players = selectedTeam.getPlayers();
+        Set<Player> players = selectedTeam.getPlayers();
         if (players == null || players.isEmpty()) {
             System.out.println("No players to remove from the selected team.");
             return;
@@ -95,8 +91,9 @@ public class TeamList {
 
         // Display players
         System.out.println("Players List:");
-        for (int i = 0; i < players.size(); i++) {
-            System.out.printf("[%d] %s%n", i + 1, players.get(i));
+        int i = 1;
+        for (Player player : players) {
+            System.out.printf("[%d] %s%n", i++, player);
         }
 
         // Prompt for player selection
@@ -107,7 +104,7 @@ public class TeamList {
             return;
         }
 
-        Player selectedPlayer = players.get(playerIndex);
+        Player selectedPlayer = new ArrayList<>(players).get(playerIndex);
         if (selectedTeam.removePlayer(selectedPlayer)) {
             System.out.println("Player removed from the team.");
         } else {
@@ -262,11 +259,11 @@ public class TeamList {
         // Prompt user to select a team
         Team selectedTeam = selectTeam();
         if (selectedTeam == null) {
-            return; // No valid team selected
+            return;
         }
 
         System.out.printf("Roster for Team: %s%n", selectedTeam.getTeamName());
-        List<Player> players = selectedTeam.getPlayers();
+        Set<Player> players = selectedTeam.getPlayers();
 
         if (players.isEmpty()) {
             System.out.println("No players in this team yet.");

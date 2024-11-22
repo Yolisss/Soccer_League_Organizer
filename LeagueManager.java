@@ -19,7 +19,6 @@ public class LeagueManager {
       // Initialize the TeamList which will manage teams
       TeamList teamList = new TeamList(reader);
 
-      // Start the team management prompt in TeamList
       teamList.run();
 
   }

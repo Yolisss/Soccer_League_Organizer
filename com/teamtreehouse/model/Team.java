@@ -5,12 +5,12 @@ import java.util.*;
 public class Team {
     private String mTeamName;
     private String mCoachName;
-    private List<Player> mPlayers;
+    private Set<Player> mPlayers;
 
     public Team(String teamName, String coachName) {
         mTeamName = teamName;
         mCoachName = coachName;
-        mPlayers = new ArrayList<>();
+        mPlayers = new TreeSet<>(); // TreeSet maintains sorted order
     }
 
     public String getTeamName() {
@@ -21,49 +21,25 @@ public class Team {
         return mCoachName;
     }
 
-    public List<Player> getPlayers() {
+    public Set<Player> getPlayers() {
         return mPlayers;
     }
 
-    public void displayPlayersAlphabetically() {
-        if (mPlayers.isEmpty()) {
-            System.out.println("No players on this team.");
-            return;
-        }
-
-        Collections.sort(mPlayers);
-
-        System.out.println("Players on " + mTeamName + ":");
-        for (Player player : mPlayers) {
-            System.out.println(player); // Will call Player's toString method
-        }
-    }
-
     public boolean addPlayer(Player player) {
-        // Check if the player is already on the team
-        if (mPlayers.contains(player)) {
-            System.out.println(player.getFirstName() + " " + player.getLastName() + " is already on the team.");
-            return false;
-        }
-
         if (mPlayers.size() >= 11) {
             System.out.println("Team is full. Cannot add more players.");
             return false;
         }
 
-        // Add the player and then sort the list to maintain alphabetical order
-        mPlayers.add(player);
-        Collections.sort(mPlayers);  // Ensures the list stays sorted
-        return true;
+        boolean added = mPlayers.add(player); // Automatically checks for duplicates
+        if (!added) {
+            System.out.println(player.getFirstName() + " " + player.getLastName() + " is already on the team.");
+        }
+        return added;
     }
 
     public boolean removePlayer(Player player) {
-        boolean removed = mPlayers.remove(player);
-
-        if (removed) {
-            Collections.sort(mPlayers);  // Sort again after removing a player
-        }
-        return removed;
+        return mPlayers.remove(player);
     }
 
     public Map<Integer, List<Player>> getHeightReport() {

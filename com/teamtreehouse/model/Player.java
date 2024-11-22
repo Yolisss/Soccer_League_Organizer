@@ -1,10 +1,6 @@
 package com.teamtreehouse.model;
 
-import java.io.Serializable;
-
-public class Player implements Comparable<Player>, Serializable {
-  private static final long serialVersionUID = 1L;
-
+public class Player implements Comparable<Player> {
   private String firstName;
   private String lastName;
   private int heightInInches;
@@ -35,45 +31,17 @@ public class Player implements Comparable<Player>, Serializable {
 
   @Override
   public int compareTo(Player other) {
-    // Compare last names first
+    // Sort by first name, then by last name
     int firstNameComparison = this.firstName.compareTo(other.firstName);
-    if (firstNameComparison != 0) {
-      return firstNameComparison; // If last names are different, return that comparison result
+    if (firstNameComparison == 0) {
+      return this.lastName.compareTo(other.lastName);
     }
-
-    // If first names are the same, compare last names
-    return this.lastName.compareTo(other.lastName);
+    return firstNameComparison;
   }
 
-
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Player)) return false;
-
-    Player player = (Player) o;
-
-    if (heightInInches != player.heightInInches) return false;
-    if (previousExperience != player.previousExperience) return false;
-    if (!firstName.equals(player.firstName)) return false;
-    return lastName.equals(player.lastName);
-
-  }
-
-  @Override
-  public int hashCode() {
-    int result = firstName.hashCode();
-    result = 31 * result + lastName.hashCode();
-    result = 31 * result + heightInInches;
-    result = 31 * result + (previousExperience ? 1 : 0);
-    return result;
-  }
-  // Override the toString method to display player info properly
   @Override
   public String toString() {
-    return String.format("%s %s, Height: %d inches, Previous Experience: %s",
-            firstName, lastName, heightInInches, previousExperience ? "Yes" : "No");
+    return String.format("%s %s (%d inches - %s)",
+            firstName, lastName, heightInInches, previousExperience ? "Experienced" : "Inexperienced");
   }
 }
-
