@@ -61,4 +61,11 @@ public class Player implements Comparable<Player>, Serializable {
     result = 31 * result + (previousExperience ? 1 : 0);
     return result;
   }
+  // Override the toString method to display player info properly
+  @Override
+  public String toString() {
+    return String.format("%s %s, Height: %d inches, Previous Experience: %s",
+            firstName, lastName, heightInInches, previousExperience ? "Yes" : "No");
+  }
 }
+

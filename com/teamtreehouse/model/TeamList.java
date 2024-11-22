@@ -3,141 +3,115 @@ package com.teamtreehouse.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-
-public class TeamList{
+public class TeamList {
+    private List<Team> mTeams;
     private BufferedReader mReader;
-    private Map<String, String> mTeams;
 
-    public TeamList(){
-        //converts from byte to char
+    public TeamList() {
+        mTeams = new ArrayList<>();
         mReader = new BufferedReader(new InputStreamReader(System.in));
-        mTeams = new HashMap<>();
     }
 
-    private String promptAction() throws IOException{
-        System.out.println("What do you want to do: ");
-        System.out.println("add - Create a new team ");
-        System.out.println("list - Show all teams ");
-        String choice = mReader.readLine();
-        return choice.trim().toLowerCase();
-    }
+    public void run() {
+        String choice;
+        do {
+            System.out.println("Choose an option:");
+            System.out.println("[1] Create a new team");
+            System.out.println("[2] Add a player to a team");
+            System.out.println("[3] View all teams");
+            System.out.println("[4] Exit");
 
-    //menu option to create a new team
-    public void run(){
-        String choice = "";
-        do{
-            try{
-                choice = promptAction();
-                switch(choice){
-                    case "add":
-                        Team newTeam = promptNewTeam();
-                        addTeam(newTeam);
+            try {
+                choice = mReader.readLine();
+                switch (choice) {
+                    case "1":
+                        addTeam();  // Calls the addTeam method
                         break;
-                    case "list":
-                        listTeams();
+                    case "2":
+                        addPlayerToTeam();
                         break;
+                    case "3":
+                        viewTeams();
+                        break;
+                    case "4":
+                        System.out.println("Goodbye!");
+                        return;
                     default:
-                        System.out.printf("Unknown choice: %s. Try again. %n%n%n", choice);
+                        System.out.println("Invalid choice. Try again.");
                 }
-            } catch(IOException ioe){
-                System.out.println("Problem with input");
-                ioe.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("An error occurred. Please try again.");
+                e.printStackTrace();
             }
-        } while(!choice.equals("quit"));
+        } while (true);
     }
 
-    //prompt to store team and coach name
-    private Team promptNewTeam() throws IOException {
-        System.out.println("Enter the team's name: ");
+    // Add a new team
+    private void addTeam() throws IOException {
+        System.out.println("Enter team name:");
         String teamName = mReader.readLine();
-        System.out.println("Enter the coach's name: ");
+        System.out.println("Enter coach name:");
         String coachName = mReader.readLine();
-        return new Team(teamName, coachName);
+
+        Team newTeam = new Team(teamName, coachName);
+        mTeams.add(newTeam);  // Add the new team to the list
+
+        System.out.println("Team created successfully: " + newTeam);
     }
 
-    private void addTeam(Team team) {
-        if (mTeams.containsKey(team.getTeamName())) {
-            System.out.println("A team with this name already exists.");
-        } else {
-            mTeams.put(team.getTeamName(), team.getCoachName());
-            System.out.printf("Added team: %s%n", team);
+    // Add a player to an existing team
+    private void addPlayerToTeam() throws IOException {
+        if (mTeams.isEmpty()) {
+            System.out.println("No teams available. Create a team first.");
+            return;
+        }
+
+        System.out.println("Choose a team by number:");
+        for (int i = 0; i < mTeams.size(); i++) {
+            System.out.printf("[%d] %s%n", i + 1, mTeams.get(i).getTeamName());
+        }
+
+        int teamIndex = Integer.parseInt(mReader.readLine()) - 1;
+        if (teamIndex < 0 || teamIndex >= mTeams.size()) {
+            System.out.println("Invalid team choice.");
+            return;
+        }
+
+        Team selectedTeam = mTeams.get(teamIndex);
+
+        Player[] players = Players.load(); // Get the available players
+        System.out.println("Choose a player by number:");
+        for (int i = 0; i < players.length; i++) {
+            System.out.printf("[%d] %s%n", i + 1, players[i]);
+        }
+
+        int playerIndex = Integer.parseInt(mReader.readLine()) - 1;
+        if (playerIndex < 0 || playerIndex >= players.length) {
+            System.out.println("Invalid player choice.");
+            return;
+        }
+
+        Player selectedPlayer = players[playerIndex];
+        if (selectedTeam.addPlayer(selectedPlayer)) {
+            System.out.println("Player added to the team.");
         }
     }
 
-    private void listTeams() {
+    // View all teams and their players
+    private void viewTeams() {
         if (mTeams.isEmpty()) {
-            System.out.println("No teams available.");
-        } else {
-            System.out.println("Current teams:");
-            for (String team : mTeams.keySet()) {
-                System.out.println(team);
+            System.out.println("No teams created yet.");
+            return;
+        }
+
+        for (Team team : mTeams) {
+            System.out.println(team);
+            for (Player player : team.getPlayers()) {
+                System.out.println("  " + player);
             }
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//import java.util.ArrayList;
-//import java.util.List;
-
-//public class TeamList {
-//    //ONE shared list of teams
-//    private static List<Team> mTeams = new ArrayList<>();
-//
-//    //constructor
-//    public TeamList() {
-//        //initializing with emptyArr
-//        mTeams = new ArrayList<Team>();
-//    }
-//
-//    //data type team= holds team and coach var
-//    //team is whatever input from the user
-//    public static void addTeam(Team newTeam) {
-//        //adding new team to list of mTeams
-//        mTeams.add(newTeam);
-//    }
-//
-//    //getter
-//    public static List<Team> getTeams() {
-//        return mTeams;
-//    }
-//}
