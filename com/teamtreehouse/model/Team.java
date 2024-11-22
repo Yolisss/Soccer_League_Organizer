@@ -1,8 +1,6 @@
 package com.teamtreehouse.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Team {
     private String mTeamName;
@@ -68,6 +66,18 @@ public class Team {
             Collections.sort(mPlayers);  // Sort again after removing a player
         }
         return removed;
+    }
+
+    public Map<Integer, List<Player>> getHeightReport() {
+        Map<Integer, List<Player>> heightGroups = new HashMap<>();
+
+        for (Player player : mPlayers) {
+            int height = player.getHeightInInches();
+            heightGroups.putIfAbsent(height, new ArrayList<>());
+            heightGroups.get(height).add(player);
+        }
+
+        return heightGroups;
     }
 
     @Override

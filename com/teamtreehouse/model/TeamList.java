@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TeamList {
     private List<Team> mTeams;
@@ -23,7 +24,8 @@ public class TeamList {
             System.out.println("[2] Add a player to a team");
             System.out.println("[3] View all teams");
             System.out.println("[4] Remove a player from a team");
-            System.out.println("[5] Exit");
+            System.out.println("[5] View team height report");
+            System.out.println("[6] Exit");
 
             try {
                 choice = mReader.readLine();
@@ -41,6 +43,9 @@ public class TeamList {
                         removePlayerFromTeam();
                         break;
                     case "5":
+                        viewHeightReport();
+                        break;
+                    case "6":
                         System.out.println("Goodbye!");
                         return;
                     default:
@@ -173,6 +178,43 @@ public class TeamList {
             System.out.println(team);
             for (Player player : team.getPlayers()) {
                 System.out.println("  " + player);
+            }
+        }
+    }
+
+    private void viewHeightReport() throws IOException {
+        if (mTeams.isEmpty()) {
+            System.out.println("No teams available. Create a team first.");
+            return;
+        }
+
+        // Prompt user to select a team
+        System.out.println("Choose a team by number:");
+        for (int i = 0; i < mTeams.size(); i++) {
+            System.out.printf("[%d] %s%n", i + 1, mTeams.get(i).getTeamName());
+        }
+
+        int teamIndex = Integer.parseInt(mReader.readLine()) - 1;
+        if (teamIndex < 0 || teamIndex >= mTeams.size()) {
+            System.out.println("Invalid team choice.");
+            return;
+        }
+
+        Team selectedTeam = mTeams.get(teamIndex);
+
+        // Generate and display the height report
+        Map<Integer, List<Player>> heightReport = selectedTeam.getHeightReport();
+        System.out.println("\nList of players by height:");
+
+        for (Map.Entry<Integer, List<Player>> entry : heightReport.entrySet()) {
+            int height = entry.getKey();
+            List<Player> players = entry.getValue();
+            for (Player player : players) {
+                System.out.printf("%s %s (%d inches - %s)%n",
+                        player.getFirstName(),
+                        player.getLastName(),
+                        height,
+                        player.isPreviousExperience() ? "experienced" : "inexperienced");
             }
         }
     }
