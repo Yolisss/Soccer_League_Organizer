@@ -145,6 +145,9 @@ public class TeamList {
             return;
         }
 
+        // Display teams alphabetically
+        displayTeamsAlphabetically(mTeams);
+
         System.out.println("Choose a team by number:");
         for (int i = 0; i < mTeams.size(); i++) {
             System.out.printf("[%d] %s%n", i + 1, mTeams.get(i).getTeamName());
