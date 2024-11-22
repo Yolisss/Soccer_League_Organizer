@@ -80,6 +80,24 @@ public class Team {
         return heightGroups;
     }
 
+    public Map<String, Integer> getPlayerExperienceReport() {
+        int experienced = 0;
+        int inexperienced = 0;
+
+        for (Player player : mPlayers) {
+            if (player.isPreviousExperience()) {
+                experienced++;
+            } else {
+                inexperienced++;
+            }
+        }
+
+        Map<String, Integer> experienceReport = new HashMap<>();
+        experienceReport.put("Experienced", experienced);
+        experienceReport.put("Inexperienced", inexperienced);
+        return experienceReport;
+    }
+
     @Override
     public String toString() {
         return String.format("Team: %s, Coach: %s", mTeamName, mCoachName);

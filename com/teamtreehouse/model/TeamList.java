@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,8 @@ public class TeamList {
             System.out.println("[3] View all teams");
             System.out.println("[4] Remove a player from a team");
             System.out.println("[5] View team height report");
-            System.out.println("[6] Exit");
+            System.out.println("[6] League Balance Report");
+            System.out.println("[7] Exit");
 
             try {
                 choice = mReader.readLine();
@@ -46,6 +48,9 @@ public class TeamList {
                         viewHeightReport();
                         break;
                     case "6":
+                        viewLeagueBalanceReport();
+                        break;
+                    case "7":
                         System.out.println("Goodbye!");
                         return;
                     default:
@@ -216,6 +221,31 @@ public class TeamList {
                         height,
                         player.isPreviousExperience() ? "experienced" : "inexperienced");
             }
+        }
+    }
+
+    private void viewLeagueBalanceReport() {
+        if (mTeams.isEmpty()) {
+            System.out.println("No teams available. Create teams first.");
+            return;
+        }
+
+        System.out.println("\nLeague Balance Report:");
+        Map<String, Map<String, Integer>> leagueReport = new HashMap<>();
+
+        for (Team team : mTeams) {
+            Map<String, Integer> playerCounts = team.getPlayerExperienceReport();
+            leagueReport.put(team.getTeamName(), playerCounts);
+        }
+
+        // Display the league report
+        for (Map.Entry<String, Map<String, Integer>> entry : leagueReport.entrySet()) {
+            String teamName = entry.getKey();
+            Map<String, Integer> playerCounts = entry.getValue();
+            System.out.printf("%s: %d Experienced, %d Inexperienced%n",
+                    teamName,
+                    playerCounts.get("Experienced"),
+                    playerCounts.get("Inexperienced"));
         }
     }
 }
