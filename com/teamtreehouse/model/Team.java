@@ -42,6 +42,11 @@ public class Team {
         return true;
     }
 
+    public boolean removePlayer(Player player) {
+        return mPlayers.remove(player);
+    }
+
+
     @Override
     public String toString() {
         return String.format("Team: %s, Coach: %s", mTeamName, mCoachName);
