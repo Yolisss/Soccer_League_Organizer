@@ -180,6 +180,9 @@ public class TeamList {
             return;
         }
 
+        // Sort the list using the natural ordering
+        Collections.sort(mTeams);
+
         for (Team team : mTeams) {
             System.out.println(team);
             for (Player player : team.getPlayers()) {

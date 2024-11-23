@@ -2,7 +2,7 @@ package com.teamtreehouse.model;
 
 import java.util.*;
 
-public class Team {
+public class Team implements Comparable<Team>{
     private String mTeamName;
     private String mCoachName;
     private Set<Player> mPlayers;
@@ -71,6 +71,12 @@ public class Team {
         experienceReport.put("Inexperienced", inexperienced);
         return experienceReport;
     }
+
+    @Override
+    public int compareTo(Team other) {
+        return this.mTeamName.compareToIgnoreCase(other.mTeamName);
+    }
+
 
     @Override
     public String toString() {
